@@ -1,9 +1,7 @@
-<script setup>
-import TheWelcome from "../components/TheWelcome.vue";
-</script>
+<script></script>
 
 <template>
   <main>
-    <TheWelcome />
+    <h1>Übersicht mit Flaggen hierhin</h1>
   </main>
 </template>
