@@ -13,7 +13,8 @@
           Region: <span>{{ country.region }}</span>
         </h5>
         <h5>
-          Capital: <span>{{ country.capital }}</span>
+          Capital:
+          <span v-for="capital in country.capital" :key="capital">{{ capital }}</span>
         </h5>
       </div>
     </router-link>
@@ -40,7 +41,7 @@ export default {
 </script>
 
 <style scoped>
-@import "../assets/main.css";
+@import "../assets/base.css";
 
 .country {
   background-color: var(--color-elements);
@@ -52,8 +53,12 @@ export default {
 .country h5 span {
   font-weight: 300;
 }
-
+.country h5 {
+  margin: 5px 0;
+}
 .country__flag img {
+  height: 250px;
+  object-fit: cover;
   border-radius: 5px 5px 0 0;
 }
 
