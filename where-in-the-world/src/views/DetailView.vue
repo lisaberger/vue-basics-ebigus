@@ -61,13 +61,14 @@
           <div>
             <h5>Border Countries:</h5>
             <div class="borders__container">
-              <span
+              <button
                 v-for="borderCountry in borders"
                 :key="borderCountry.cca3"
                 class="borders"
+                @click="navigateToCountry(borderCountry)"
               >
                 {{ borderCountry.name.common }}
-              </span>
+              </button>
             </div>
           </div>
         </div>
@@ -91,24 +92,35 @@ export default {
       borders: [],
     };
   },
-  computed: {
-    currentCountryName() {
-      return this.$route.params.name;
-    },
+  beforeMount() {
+    this.getCountry();
   },
-  async beforeMount() {
-    await axios
-      .get(`https://restcountries.com/v3.1/name/${this.$route.params.name}`)
-      .then((res) => {
-        this.country = res.data[0];
-      })
-      .catch((err) => console.error(err));
-
-    this.country.borders.forEach((e) => {
-      axios.get(`https://restcountries.com/v3.1/alpha/${e}`).then((res) => {
-        this.borders.push(res.data[0]);
+  mounted() {
+    this.getborderCountries(this.country);
+  },
+  methods: {
+    getCountry() {
+      // get country
+      axios
+        .get(`https://restcountries.com/v3.1/name/${this.$route.params.name}`)
+        .then((res) => {
+          this.country = res.data[0];
+        })
+        .catch((err) => console.error(err));
+    },
+    getborderCountries(country) {
+      // get border countries
+      let borderCountries = country.borders;
+      borderCountries.forEach((e) => {
+        axios.get(`https://restcountries.com/v3.1/alpha/${e}`).then((res) => {
+          this.borders.push(res.data[0]);
+        });
       });
-    });
+    },
+    navigateToCountry(borderCountry) {
+      this.$router.replace(`/country/${borderCountry.name.common}`);
+      this.getCountry();
+    },
   },
 };
 </script>
@@ -178,11 +190,15 @@ export default {
   padding: 12px;
   font-family: inherit;
   border: none;
+  cursor: pointer;
   border-radius: 5px;
   color: var(--color-text);
 }
-.borders + .borders {
-  margin-left: 10px;
+
+.borders__container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 @media (min-width: 1440px) {
