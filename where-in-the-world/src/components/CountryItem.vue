@@ -14,7 +14,9 @@
         </h5>
         <h5>
           Capital:
-          <span v-for="capital in country.capital" :key="capital">{{ capital }}</span>
+          <span v-for="capital in country.capital" :key="capital">{{
+            capital
+          }}</span>
         </h5>
       </div>
     </router-link>
